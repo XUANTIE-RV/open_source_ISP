@@ -3,11 +3,10 @@
 uint8 Cal_weight(uint30 diff,rawdns_register& rawdns_reg,uint26 ksigma2)
 {
     const static uint8 weight_1[10] = {244,220,197,180,163,148,133,120,111,99};
-#pragma HLS ARRAY_PARTITION variable=weight_1 complete dim=1
     const static uint8 weight_2[18] = {85,70,57,47,39,32,26,21,18,15,12,10,8,7,6,3,1,0};
-#pragma HLS ARRAY_PARTITION variable=weight_2 complete dim=1
 
     uint8 weight;
+    uint40 weight_temp;
 
     if(ksigma2 == 0)
     {
@@ -16,66 +15,26 @@ uint8 Cal_weight(uint30 diff,rawdns_register& rawdns_reg,uint26 ksigma2)
     else if (diff > ksigma2)
     {
         diff = 5 * diff;
+        weight_temp = ((diff * rawdns_reg.invksigma2) >> 20) - 5;
+
         if(diff < 6 * ksigma2)
             weight = weight_2[0];
-        else if (diff < 7 * ksigma2)
-            weight = weight_2[1];
-        else if(diff < 8 * ksigma2)
-            weight = weight_2[2];
-        else if(diff < 9 * ksigma2)
-            weight = weight_2[3];
-        else if(diff < 10 * ksigma2)
-            weight = weight_2[4];
-        else if(diff < 11 * ksigma2)
-            weight = weight_2[5];
-        else if(diff < 12 * ksigma2)
-            weight = weight_2[6];
-        else if(diff < 13 * ksigma2)
-            weight = weight_2[7];
-        else if(diff < 14 * ksigma2)
-            weight = weight_2[8];
-        else if(diff < 15 * ksigma2)
-            weight = weight_2[9];
-        else if(diff < 16 * ksigma2)
-            weight = weight_2[10];
-        else if(diff < 17 * ksigma2)
-            weight = weight_2[11];
-        else if(diff < 18 * ksigma2)
-            weight = weight_2[12];
-        else if(diff < 19 * ksigma2)
-            weight = weight_2[13];
-        else if(diff < 20 * ksigma2)
-            weight = weight_2[14];
-        else if(diff < 21 * ksigma2)
-            weight = weight_2[15];
-        else if(diff < 22 * ksigma2)
-            weight = weight_2[16];
-        else
+        else if(diff >= 22 * ksigma2)
             weight = weight_2[17];
+        else
+            weight = weight_2[weight_temp];
     }
     else
     {
         diff = 10 * diff;
+        weight_temp = (diff * rawdns_reg.invksigma2) >> 20;
+
         if(diff < ksigma2)
             weight = weight_1[0];
-        else if(diff < 2 * ksigma2)
-            weight = weight_1[1];
-        else if(diff < 3 * ksigma2)
-            weight = weight_1[2];
-        else if(diff < 4 * ksigma2)
-            weight = weight_1[3];
-        else if(diff < 5 * ksigma2)
-            weight = weight_1[4];
-        else if(diff < 6 * ksigma2)
-            weight = weight_1[5];
-        else if(diff < 7 * ksigma2)
-            weight = weight_1[6];
-        else if(diff < 8 * ksigma2)
-            weight = weight_1[7];
-        else if(diff < 9 * ksigma2)
-            weight = weight_1[8];
-        else
+        else if(diff >= 9 * ksigma2)
             weight = weight_1[9];
+        else
+            weight = weight_1[weight_temp];
     }
     return weight;
 }
@@ -144,10 +103,8 @@ uint12 rawdns_process(uint12 rawdns_block[11][11],rawdns_register& rawdns_reg, u
 
 void isp_rawdns(top_register& top_reg, rawdns_register& rawdns_reg, stream_u12& src, stream_u12& dst)
 {
-    uint12 rawdns_lines[10][4096];
-#pragma HLS ARRAY_PARTITION variable=rawdns_lines block factor=10 dim=1
+    uint12 rawdns_lines[10][8192];
     uint12 rawdns_block[11][11];
-#pragma HLS ARRAY_PARTITION variable=rawdns_block complete dim=0
 
     uint26 n;
     uint13 i = 0,j = 0,count = 0;
@@ -156,14 +113,12 @@ void isp_rawdns(top_register& top_reg, rawdns_register& rawdns_reg, stream_u12& 
     uint6 sigma = rawdns_reg.sigma;
     uint7 filterpara = rawdns_reg.Filterpara;
     uint13 ksigma  = sigma * filterpara;
-    uint26 ksigma2 = (ksigma * ksigma) >> 16;
+    uint26 ksigma2 = (ksigma * ksigma) >> (16 - 8);
 
     uint12 src_data ,dst_data;
 
     pixel_loop:for(n=0;n<top_reg.frameHeight * top_reg.frameWidth;n++)
     {
-#pragma HLS LOOP_TRIPCOUNT avg=2048
-#pragma HLS PIPELINE
         src_data = src.read();
 
         if(count == top_reg.frameWidth)
@@ -202,7 +157,7 @@ void isp_rawdns(top_register& top_reg, rawdns_register& rawdns_reg, stream_u12& 
             }
             else
             {
-                dst_data = 0;
+                dst_data = rawdns_block[5][5];
             }
 
             #ifdef  DEBUG
@@ -233,7 +188,7 @@ void isp_rawdns(top_register& top_reg, rawdns_register& rawdns_reg, stream_u12& 
         }
         else
         {
-            dst_data = 0;
+            dst_data = src_data;
             dst.write(dst_data);
         }
     }
@@ -243,21 +198,17 @@ void isp_rawdns(top_register& top_reg, rawdns_register& rawdns_reg, stream_u12& 
     {
         padding_loop1:for(k = 0; k < 5 ;k++)
         {
-#pragma HLS UNROLL
 
-            dst_data = 0;
+            dst_data = rawdns_lines[4][top_reg.frameWidth - 5 + k];
             dst.write(dst_data);
         }
 
         padding_loop2:for(k = 0; k < 5 ;k++)
         {
-#pragma HLS UNROLL factor=5
 
             loop2_inner_loop:for(i = 0;i < top_reg.frameWidth;i++)
             {
-#pragma HLS PIPELINE
-
-                dst_data = 0;
+                dst_data = rawdns_lines[k + 5][i];
                 dst.write(dst_data);
             }
         }

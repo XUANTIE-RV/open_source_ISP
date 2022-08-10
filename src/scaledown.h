@@ -1,5 +1,5 @@
-#ifndef _ISP_SCALEDOWN_H_
-#define _ISP_SCALEDOWN_H_
+#ifndef xkISP_SCALEDOWN_H_
+#define xkISP_SCALEDOWN_H_
 
 #include "top.h"
 

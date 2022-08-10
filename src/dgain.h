@@ -1,5 +1,5 @@
-#ifndef _ISP_DGAIN_H_
-#define _ISP_DGAIN_H_
+#ifndef xkISP_DGAIN_H_
+#define xkISP_DGAIN_H_
 
 #include "top.h"
 

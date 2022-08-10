@@ -6,6 +6,7 @@ typedef struct{
     uint6   sigma;    //range[0-63]
     uint1   eb;       //{0,1}
     uint7   Filterpara; //range[0-127]
+    uint12  invksigma2; //1/ksigma2 <<12
 }rawdns_register;
 
 

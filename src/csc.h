@@ -1,5 +1,5 @@
-#ifndef _ISP_CSC_H_
-#define _ISP_CSC_H_
+#ifndef xkISP_CSC_H_
+#define xkISP_CSC_H_
 
 #include "top.h"
 

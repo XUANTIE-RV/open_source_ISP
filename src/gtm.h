@@ -1,5 +1,5 @@
-#ifndef _ISP_GTM_H_
-#define _ISP_GTM_H_
+#ifndef xkISP_GTM_H_
+#define xkISP_GTM_H_
 
 #include "top.h"
 

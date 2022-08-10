@@ -1,5 +1,5 @@
-#ifndef _ISP_AWB_H_
-#define _ISP_AWB_H_
+#ifndef xkISP_AWB_H_
+#define xkISP_AWB_H_
 
 #include "top.h"
 

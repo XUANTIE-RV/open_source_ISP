@@ -17,6 +17,7 @@ int main(int argc, char* argv[])
     rawdnsParam.eb = 1;
     rawdnsParam.sigma = 30;
     rawdnsParam.Filterpara = 50;
+    rawdnsParam.invksigma2 = 119;//1/34<<12;
 
     uint16_t* frame_in = (uint16_t*)malloc(sizeof(uint16_t) * topParam.frameWidth * topParam.frameHeight);
     uint16_t* golden_in = (uint16_t*)malloc(sizeof(uint16_t) * topParam.frameWidth * topParam.frameHeight);
@@ -83,7 +84,7 @@ int main(int argc, char* argv[])
             cout << "Golden = " << setbase(10) << golden_in[i] << endl;
             cout << "result = " << setbase(10) << frame_out[i] << endl;
             printf("\t i=%d, \trows=%d,\tcols=%d\n", i, i / topParam.frameWidth.to_int(), i - (i / topParam.frameWidth.to_int()) * topParam.frameWidth.to_int());
-            exit(0);
+            //exit(0);
         }
     }
 

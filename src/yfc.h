@@ -1,5 +1,5 @@
-#ifndef _ISP_YFC_H_
-#define _ISP_YFC_H_
+#ifndef xkISP_YFC_H_
+#define xkISP_YFC_H_
 
 #include "top.h"
 

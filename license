@@ -1,2 +1,12 @@
 XK-ISP
-Fudan VIP lab & Alibaba DAMO Academy
+Alibaba DAMO Academy & Fudan VIP lab
+Thanks to the support from T-HEAD(Pingtouge), especially Ruihua Xiao and Chongfei Meng for ISP tuning and test images.
+Also thanks to the support from Mentor Catapult AE.
+
+Version
+202206 init version; Xilinx vitis flow supported
+202207 Mentor catapult hls supported; fix lots of bugs
+
+Statement:
+fpga/xcl2.cpp and fpga/xcl2.hpp are Xilinx library files
+

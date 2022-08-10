@@ -1,7 +1,7 @@
 //Created by Jia Wang 2021/2/20
 
-#ifndef _DEMOSAIC_HLS_H_
-#define _DEMOSAIC_HLS_H_
+#ifndef xkISP_DEMOSAIC_H_
+#define xkISP_DEMOSAIC_H_
 
 #include "top.h"
 
