@@ -6,7 +6,8 @@ Also thanks to the support from Mentor Catapult AE.
 Version
 202206 init version; Xilinx vitis flow supported
 202207 Mentor catapult hls supported; fix lots of bugs
-202208 CAC & LTM added; module level catapult script added; fix several bugs
+202208 cac and ltm added; module level catapult script added
+202210 3d lut added; seperate vivado and catapult source code
 
 Statement:
 fpga/xcl2.cpp and fpga/xcl2.hpp are Xilinx library files
