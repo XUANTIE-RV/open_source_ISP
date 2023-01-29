@@ -1,4 +1,5 @@
 #include"lsc.h"
+#include <ac_assert.h>
 
 uint12 lsc_clip(int16 a, int lower, int upper) {
     uint12 result;
@@ -137,7 +138,7 @@ void lsc(top_register topRegister, lsc_register &lscRegister, stream_u12 &src, s
                 dst_t = lsc_clip(dst_value, 0, 4095);
 
                 #ifdef DEBUG
-                if((x == COL_TEST) && (y == ROW_TEST)) {
+                if((x == topRegister.COL_TEST) && (y == topRegister.ROW_TEST)) {
                     printf("\t lsc_in = %d\n", src_t.to_int());
                     printf("\t line_is_blue = %d\n", line_is_blue);
                     printf("\t gain_lt = %d\n", gain_lt.to_int());
@@ -208,34 +209,42 @@ void lsc(top_register topRegister, lsc_register &lscRegister, stream_u12 &src, s
                 }
                 else if((line_is_blue == 1) && (x == 5) && (y != 0))
                 {
+                    assert((block_count_rGr - 2) <= 220 && (block_count_rGr - 2) >= 0);
                     gain_0_lt = lscRegister.rGain[block_count_rGr - 2];
                 }
                 else if((line_is_blue == 1) && (x == 6) && (y != 0))
                 {
+                    assert((block_count_rGr - 1) <= 220 && (block_count_rGr - 1) >= 0);
                     gain_0_rt = lscRegister.rGain[block_count_rGr - 1];
                 }
                 else if((line_is_blue == 1) && (x == 7) && (y != 0))
                 {
+                    assert((block_count_rGr + 15) <= 220 && (block_count_rGr + 15) >= 0);
                     gain_0_ld = lscRegister.rGain[block_count_rGr + 15];
                 }
                 else if((line_is_blue == 1) && (x == 8) && (y != 0))
                 {
+                    assert((block_count_rGr + 16) <= 220 && (block_count_rGr + 16) >= 0);
                     gain_0_rd = lscRegister.rGain[block_count_rGr + 16];
                 }
                 else if((line_is_blue == 1) && (x == 9) && (y != 0))
                 {
+                    assert((block_count_rGr - 2) <= 220 && (block_count_rGr - 2) >= 0);
                     gain_1_lt = lscRegister.GrGain[block_count_rGr - 2];
                 }
                 else if((line_is_blue == 1) && (x == 10) && (y != 0))
                 {
+                    assert((block_count_rGr - 1) <= 220 && (block_count_rGr - 1) >= 0);
                     gain_1_rt = lscRegister.GrGain[block_count_rGr - 1];
                 }
                 else if((line_is_blue == 1) && (x == 11) && (y != 0))
                 {
+                    assert((block_count_rGr + 15) <= 220 && (block_count_rGr + 15) >= 0);
                     gain_1_ld = lscRegister.GrGain[block_count_rGr + 15];
                 }
                 else if((line_is_blue == 1) && (x == 12) && (y != 0))
                 {
+                    assert((block_count_rGr + 16) <= 220 && (block_count_rGr + 16) >= 0);
                     gain_1_rd = lscRegister.GrGain[block_count_rGr + 16];
                 }
                 }
@@ -254,34 +263,42 @@ void lsc(top_register topRegister, lsc_register &lscRegister, stream_u12 &src, s
                 }
                 else if((line_is_blue == 0) && (x == 5) && (y != 0))
                 {
+                    assert((block_count_Gbb - 2) <= 220 && (block_count_Gbb - 2) >= 0);
                     gain_2_lt = lscRegister.GbGain[block_count_Gbb - 2];
                 }
                 else if((line_is_blue == 0) && (x == 6) && (y != 0))
                 {
+                    assert((block_count_Gbb - 1) <= 220 && (block_count_Gbb - 1) >= 0);
                     gain_2_rt = lscRegister.GbGain[block_count_Gbb - 1];
                 }
                 else if((line_is_blue == 0) && (x == 7) && (y != 0))
                 {
+                    assert((block_count_Gbb + 15) <= 220 && (block_count_Gbb + 15) >= 0);
                     gain_2_ld = lscRegister.GbGain[block_count_Gbb + 15];
                 }
                 else if((line_is_blue == 0) && (x == 8) && (y != 0))
                 {
+                    assert((block_count_Gbb + 16) <= 220 && (block_count_Gbb + 16) >= 0);
                     gain_2_rd = lscRegister.GbGain[block_count_Gbb + 16];
                 }
                 else if((line_is_blue == 0) && (x == 9) && (y != 0))
                 {
+                    assert((block_count_Gbb - 2) <= 220 && (block_count_Gbb - 2) >= 0);
                     gain_3_lt = lscRegister.bGain[block_count_Gbb - 2];
                 }
                 else if((line_is_blue == 0) && (x == 10) && (y != 0))
                 {
+                    assert((block_count_Gbb - 1) <= 220 && (block_count_Gbb - 1) >= 0);
                     gain_3_rt = lscRegister.bGain[block_count_Gbb - 1];
                 }
                 else if((line_is_blue == 0) && (x == 11) && (y != 0))
                 {
+                    assert((block_count_Gbb + 15) <= 220 && (block_count_Gbb + 15) >= 0);
                     gain_3_ld = lscRegister.bGain[block_count_Gbb + 15];
                 }
                 else if((line_is_blue == 0) && (x == 12) && (y != 0))
                 {
+                    assert((block_count_Gbb + 16) <= 220 && (block_count_Gbb + 16) >= 0);
                     gain_3_rd = lscRegister.bGain[block_count_Gbb + 16];
                 }
                 }
@@ -328,7 +345,7 @@ void lsc(top_register topRegister, lsc_register &lscRegister, stream_u12 &src, s
             }
             else
             {
-                dst_t = src_t;
+                dst_t = src_w;
             }
             dst.write(dst_t);
         }

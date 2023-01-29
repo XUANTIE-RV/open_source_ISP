@@ -1,5 +1,5 @@
 # Introduction
-xk-isp is an open source image signal processor (ISP) based on Xilinx development tools. Up to now, it supports to process 12-bit raw image data of any resolution. The entire pipeline includes 17 function modules  shown in the following:
+xk-isp is an open source image signal processor (ISP) based on Xilinx development tools. Up to now, it supports to process 12-bit raw image data of any resolution. The entire pipeline includes 17 function modules (latest 25 stages, we will update the details later) shown in the following:
 
 ![输入图片说明](imgs/pipeline.png)
 
@@ -7,6 +7,7 @@ xk-isp is an open source image signal processor (ISP) based on Xilinx developmen
 
 ```
 openISP
+├─catapult (source file for catapult HLS)
 ├─fpga
 │      host.cpp
 │      top.cpp

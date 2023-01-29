@@ -8,6 +8,7 @@ Version
 202207 Mentor catapult hls supported; fix lots of bugs
 202208 cac and ltm added; module level catapult script added
 202210 3d lut added; seperate vivado and catapult source code
+202301 AE & AF statistics added; SDE filter added; simple dehaze & 3DNR added
 
 Statement:
 fpga/xcl2.cpp and fpga/xcl2.hpp are Xilinx library files

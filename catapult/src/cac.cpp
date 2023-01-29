@@ -134,7 +134,7 @@ void cac(top_register top_reg, cac_register cac_reg, stream_u42 &src, stream_u42
                         }
 
                         #ifdef DEBUG
-                        if(row == ROW_TEST + 5 && col == COL_TEST + 3) {
+                        if(row == top_reg.ROW_TEST + 5 && col == top_reg.COL_TEST + 3) {
                             printf("rg_diff_h \t%d\t%d\t%d\t%d\t%d|\t%d\t%d\n", rg_diff_h[0].to_int(),rg_diff_h[1].to_int(),rg_diff_h[2].to_int(),rg_diff_h[3].to_int(),rg_diff_h[4].to_int(),rg_diff_h[5].to_int(),rg_diff_h[6].to_int());
                             printf("bg_diff_h \t%d\t%d\t%d\t%d\t%d|\t%d\t%d\n", bg_diff_h[0].to_int(),bg_diff_h[1].to_int(),bg_diff_h[2].to_int(),bg_diff_h[3].to_int(),bg_diff_h[4].to_int(),bg_diff_h[5].to_int(),bg_diff_h[6].to_int());
                             printf("rg_diff_v \t%d\t%d\t%d\t%d\t%d|\t%d\t%d\n", rg_diff_v[0].to_int(),rg_diff_v[1].to_int(),rg_diff_v[2].to_int(),rg_diff_v[3].to_int(),rg_diff_v[4].to_int(),rg_diff_v[5].to_int(),rg_diff_v[6].to_int());
@@ -184,7 +184,10 @@ void cac(top_register top_reg, cac_register cac_reg, stream_u42 &src, stream_u42
                             // correction horizontal pixels between l_t and r_t
                             //catapult slack = 0 area = 65718.81
                             l_r_loop: for(uint3 i = 0; i <= 6; i++) {
-                                if(i > l_t && i < r_t) {
+                                if(i <= l_t || i >= r_t) {
+                                    continue;
+                                }
+                                //if(i > l_t && i < r_t) {
                                     if(bg_diff_h[i] > cac_max(bg_diff_h[l_t], bg_diff_h[r_t])) {
                                         inPixel_int[3][i].b = inPixel_int[3][i].g + cac_max(bg_diff_h[l_t],bg_diff_h[r_t]);
                                     }
@@ -198,11 +201,11 @@ void cac(top_register top_reg, cac_register cac_reg, stream_u42 &src, stream_u42
                                     else if(rg_diff_h[i] < cac_min(rg_diff_h[l_t], rg_diff_h[r_t])) {
                                         inPixel_int[3][i].r = inPixel_int[3][i].g + cac_min(rg_diff_h[l_t],rg_diff_h[r_t]);
                                     }
-                                }
+                                //}
                             }
 
                             #ifdef DEBUG
-                            if(row == ROW_TEST + 5 && col == COL_TEST + 3) {
+                            if(row == top_reg.ROW_TEST + 5 && col == top_reg.COL_TEST + 3) {
                                 printf("inPixel_int[1][3].r=%d\n", inPixel_int[1][3].r.to_int());
                                 printf("inPixel_int[1][3].b=%d\n", inPixel_int[1][3].b.to_int());
                             }
@@ -244,6 +247,9 @@ void cac(top_register top_reg, cac_register cac_reg, stream_u42 &src, stream_u42
 
 
                             u_d_loop: for(uint3 i = 0; i <= 6; i++) {
+                                if(i <= u_t || i >= d_t) {
+                                    continue;
+                                }
                                 if(i > u_t && i < d_t) {
                                     if(bg_diff_v[i] > cac_max(bg_diff_v[u_t], bg_diff_v[d_t])) {
                                         inPixel_int[i][3].b = inPixel_int[i][3].g + cac_max(bg_diff_v[u_t],bg_diff_v[d_t]);
@@ -260,34 +266,35 @@ void cac(top_register top_reg, cac_register cac_reg, stream_u42 &src, stream_u42
                                     }
                                 }
                             }
-
+/*
                             #ifdef DEBUG
-                            if(row == ROW_TEST + 5 && col == COL_TEST + 3) {
+                            if(row == top_reg.ROW_TEST + 5 && col == top_reg.COL_TEST + 3) {
                                 printf("inPixel_int[1][3].r=%d\n", inPixel_int[1][3].r.to_int());
                                 printf("inPixel_int[1][3].b=%d\n", inPixel_int[1][3].b.to_int());
                             }
-                            #endif
+                            #endif*/
                         }
+                        /*
                             #ifdef DEBUG
-                            if(row == ROW_TEST + 5 && col == COL_TEST + 3) {
+                            if(row == top_reg.ROW_TEST + 5 && col == top_reg.COL_TEST + 3) {
                                 printf("inPixel_int[1][3].r=%d\n", inPixel_int[1][3].r.to_int());
                                 printf("inPixel_int[1][3].b=%d\n", inPixel_int[1][3].b.to_int());
-                                printf("window.r=%d\n", rgbWindow[1][3](41,28).to_int());
-                                printf("window.b=%d\n", rgbWindow[1][3](13,0).to_int());
+                                //printf("window.r=%d\n", rgbWindow[1][3](41,28).to_int());
+                                //printf("window.b=%d\n", rgbWindow[1][3](13,0).to_int());
                                 printf("storeWindow_r[1][3]=%d\n", storeWindow_r[1][3].to_int());
                                 printf("storeWindow_b[1][3]=%d\n", storeWindow_b[1][3].to_int());
                             }
                             #endif
                         #ifdef DEBUG
-                        if(row == ROW_TEST + 5 && col == COL_TEST + 3) {
+                        if(row == top_reg.ROW_TEST + 5 && col == top_reg.COL_TEST + 3) {
                             printf("inPixel_int[2][3].r=%d\n", inPixel_int[3][3].r.to_int());
                             printf("inPixel_int[2][3].b=%d\n", inPixel_int[3][3].b.to_int());
-                            printf("window.r=%d\n", rgbWindow[3][3](41,28).to_int());
-                            printf("window.b=%d\n", rgbWindow[3][3](13,0).to_int());
+                            //printf("window.r=%d\n", rgbWindow[3][3](41,28).to_int());
+                            //printf("window.b=%d\n", rgbWindow[3][3](13,0).to_int());
                             printf("storeWindow_r[2][3]=%d\n", storeWindow_r[3][3].to_int());
                             printf("storeWindow_b[2][3]=%d\n", storeWindow_b[3][3].to_int());
                         }
-                        #endif
+                        #endif*/
 
                         storeWindow_loop: for(uint3 i = 1; i < 6; i++) {
                             if(abs(rgbWindow[3][i] >> 28, cac_clip(inPixel_int[3][i].r, 0, 16383)) >= abs(storeWindow_r[3][i], rgbWindow[3][i] >> 28)) {
@@ -318,8 +325,9 @@ void cac(top_register top_reg, cac_register cac_reg, stream_u42 &src, stream_u42
                                 storeWindow_b[i][3] = cac_clip(storeWindow_b[i][3], 0, 16383);
                             }
                         }
+                        /*
                         #ifdef DEBUG
-                        if(row == ROW_TEST + 5 && col == COL_TEST + 3) {
+                        if(row == top_reg.ROW_TEST + 5 && col == top_reg.COL_TEST + 3) {
                             printf("dst_t.r=%d\n", storeWindow_r[1][3].to_int());
                             printf("dst_t.b=%d\n", storeWindow_b[1][3].to_int());
                             printf("return.r=%d\n", storeWindow_r[2][0].to_int());
@@ -329,7 +337,7 @@ void cac(top_register top_reg, cac_register cac_reg, stream_u42 &src, stream_u42
                             printf("storeWindow_r[2][3]=%d\n", storeWindow_r[2][3].to_int());
                             printf("storeWindow_b[2][3]=%d\n", storeWindow_b[2][3].to_int());
                         }
-                        #endif
+                        #endif*/
 
 
                         // output the inPixel[1][3]
@@ -349,6 +357,12 @@ void cac(top_register top_reg, cac_register cac_reg, stream_u42 &src, stream_u42
                     }
                     dst.write(dst_t);
                 }
+                      #ifdef DEBUG
+                        if(row == top_reg.ROW_TEST + 5 && col == top_reg.COL_TEST + 3) {
+                            printf("src_t=%d\n", src_t.to_int());
+                            printf("dst_t=%d\n", dst_t.to_int());
+                        }
+                        #endif
 
                 storeBuffer_write: for(uint4 i = 0; i < 6; i++) {
                     // before correction cycles, write back the final column

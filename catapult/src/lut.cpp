@@ -1,4 +1,5 @@
 #include "lut.h"
+#include <ac_assert.h>
 
 #define lut_BITS_DEEP 14
 #define lut_HALF_VALUE (1 << (lut_BITS_DEEP - 1))
@@ -85,9 +86,9 @@ void lut(const top_register top_reg, const lut_register &lut_reg, stream_u42 &sr
                 g = (src_t >> 14) & 0x3fff;
                 b = src_t & 0x3fff;
 
-                r_temp = r * (lut_reg.size - 1) << 5 >> 14;
-                g_temp = g * (lut_reg.size - 1) << 5 >> 14;
-                b_temp = b * (lut_reg.size - 1) << 5 >> 14;
+                r_temp = uint10(r * (lut_reg.size - 1) << 5 >> 14);
+                g_temp = uint10(g * (lut_reg.size - 1) << 5 >> 14);
+                b_temp = uint10(b * (lut_reg.size - 1) << 5 >> 14);
 
                 r_h = (r_temp >> 5) + 1;
                 g_h = (g_temp >> 5) + 1;
@@ -288,9 +289,10 @@ void lut(const top_register top_reg, const lut_register &lut_reg, stream_u42 &sr
 
                 index = (r_l >> 1) + ((g_l >> 1) * ((lut_reg.size + 1) >> 1)) + ((b_l >> 1) * ((lut_reg.size + 1) >> 1) * ((lut_reg.size + 1) >> 1));
 
-                decoder_g = ((lut_reg.size + 1) >> 1);
-                decoder_b = ((lut_reg.size + 1) >> 1) * ((lut_reg.size + 1) >> 1);
+                decoder_g = uint5((lut_reg.size + 1) >> 1);
+                decoder_b = uint9(((lut_reg.size + 1) >> 1) * ((lut_reg.size + 1) >> 1));
 
+                assert((index + lut_mux_r(uint1(r_l)) + lut_mux_g(uint1(g_l)) * decoder_g + lut_mux_b(uint1(b_l)) * decoder_b) < 4193);
                 value[0] = lut_reg.lut_000[index + lut_mux_r(uint1(r_l)) + lut_mux_g(uint1(g_l)) * decoder_g + lut_mux_b(uint1(b_l)) * decoder_b];
                 value[1] = lut_reg.lut_001[index + lut_mux_r(uint1(r_l)) + lut_mux_g(uint1(g_l)) * decoder_g];
                 value[2] = lut_reg.lut_010[index + lut_mux_r(uint1(r_l)) + lut_mux_b(uint1(b_l)) * decoder_b];
